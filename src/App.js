@@ -1,22 +1,27 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import axios from 'axios';
 import './App.css';
 
 function App() {
+  const [dogImage, setDogImage] = useState(null);
+
+  const fetchDogImage = () => {
+    axios.get('https://dog.ceo/api/breeds/image/random')
+      .then(response => {
+        setDogImage(response.data.message);
+      })
+      .catch(error => {
+        console.error('Error fetching data: ', error);
+        alert('Error fetching data');
+      });
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Dog Gallery</h1>
+        <button onClick={fetchDogImage}>Fetch a Dog!</button>
+        {dogImage && <img src={dogImage} alt="A Random Dog" />}
       </header>
     </div>
   );
